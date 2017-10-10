@@ -70,6 +70,11 @@
             <artifactId>commons-email</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.jtool</groupId>
+            <artifactId>jtool-apiclient</artifactId>
+            <version>0.0.12</version>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -78,5 +83,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>jtool-mvn-repository</id>
+            <url>https://raw.github.com/JavaServerGroup/jtool-mvn-repository/master/releases</url>
+        </repository>
+    </repositories>
 
 </project>

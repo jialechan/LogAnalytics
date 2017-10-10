@@ -27,6 +27,8 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 
+import static com.jtool.apiclient.ApiClient.Api;
+
 @Repository
 public class Runner {
 
@@ -66,7 +68,7 @@ public class Runner {
                 "<img src='data:image/png;base64, " + totalAccessBase64Data + "' /><br/><br/>" +
                 "<img src='data:image/png;base64, " + urlCallPicChartBase64Data + "' /><br/><br/>" +
                 "<img src='data:image/png;base64, " + consumePieChartBase64Data + "' /><br/><br/>" +
-                "邮件发送于: " + GetLocalIp.getLocalHostIP() +
+                "邮件发送于: <br/>" + fetchLocalIps() +
                 "</body></html>";
 
         final String title = mailConfig.getMailTitle() + " [" + dateStr + "] (总计" + new DecimalFormat("#,###").format(analyticsResult.getTotalAccess()) + "次)";
@@ -85,12 +87,28 @@ public class Runner {
         log.info("Done, isSend: " + isSend);
     }
 
+    private String fetchLocalIps() {
+        String[] ips = GetLocalIp.getAllLocalHostIP();
+
+        String ipsStr = "";
+        try {
+            ipsStr = Api().get("http://169.254.169.254/latest/meta-data/public-ipv4");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for(String ip : ips) {
+            ipsStr += ip + "<br/>";
+        }
+        return ipsStr;
+    }
+
     private String genConsumeBase64Data(AnalyticsResult analyticsResult) {
         try {
             MapUtil.sortByValueDesc(analyticsResult.getConsumeResult());
 
             PieChartInfo pieChartInfo = new PieChartInfo();
-            pieChartInfo.setTitle("消耗前20名");
+            pieChartInfo.setTitle("Consumed the top 20");
 
             return ChartMaker.makeConsumePieChart(analyticsResult, pieChartInfo);
         } catch (Exception e) {
@@ -104,7 +122,7 @@ public class Runner {
             MapUtil.sortByValueDesc(analyticsResult.getCallResult());
 
             PieChartInfo pieChartInfo = new PieChartInfo();
-            pieChartInfo.setTitle("调用前20名");
+            pieChartInfo.setTitle("Call the top 20");
 
             return ChartMaker.makeUrlCallPieChart(analyticsResult, pieChartInfo);
         } catch (Exception e) {
@@ -117,7 +135,7 @@ public class Runner {
         try {
 
             LineChartInfo lineChartInfo = new LineChartInfo();
-            lineChartInfo.setTitle("总计请求数(" + analyticsResult.getTotalAccess() + "次)");
+            lineChartInfo.setTitle("Total number of requests(" + analyticsResult.getTotalAccess() + "times)");
 
             return ChartMaker.makeAccessCountChart(analyticsResult, lineChartInfo);
 

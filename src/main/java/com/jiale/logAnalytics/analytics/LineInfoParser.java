@@ -17,7 +17,10 @@ public class LineInfoParser {
             lineInfo = new LineInfo();
             lineInfo.setTime(matcher.group(2) + ":" + matcher.group(3) + ":00");
             lineInfo.setStat(matcher.group(6));
-            lineInfo.setRequestTime(Double.parseDouble(matcher.group(7)));
+            final String reqStr = matcher.group(7);
+            if(!"-".equals(reqStr)) {
+                lineInfo.setRequestTime(Double.parseDouble(reqStr));
+            }
             String uri = matcher.group(8);
             if(uri.contains("?")) {
                 uri = uri.substring(0, uri.indexOf("?"));

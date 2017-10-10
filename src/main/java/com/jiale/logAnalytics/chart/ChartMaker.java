@@ -34,7 +34,7 @@ public class ChartMaker {
 
     public static String makeAccessCountChart(AnalyticsResult analyticsResult, LineChartInfo lineChartInfo) throws IOException, ParseException {
         TimeSeriesCollection dataTimeSet = new TimeSeriesCollection();
-        TimeSeries timesre = new TimeSeries("总计请求数", Minute.class);
+        TimeSeries timesre = new TimeSeries("Total number of requests", Minute.class);
 
         for(Map.Entry<String, Integer> item : analyticsResult.getAccessResult().entrySet()) {
             timesre.add(new Minute(new SimpleDateFormat("HH:mm:'00'").parse(item.getKey())), item.getValue());
@@ -43,7 +43,7 @@ public class ChartMaker {
         dataTimeSet.addSeries(timesre);
 
 
-        JFreeChart chartTime = ChartFactory.createTimeSeriesChart(lineChartInfo.getTitle(), "服务器时间", "次／分钟", dataTimeSet, true, true, false);
+        JFreeChart chartTime = ChartFactory.createTimeSeriesChart(lineChartInfo.getTitle(), "server time", "times / min", dataTimeSet, true, true, false);
         chartTime.setBackgroundPaint(Color.white);
         XYPlot plot = chartTime.getXYPlot();
         plot.setBackgroundPaint(Color.white);// 设置网格背景色
@@ -78,7 +78,7 @@ public class ChartMaker {
 
         PiePlot plot = (PiePlot) pieChart.getPlot();
 
-        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} {1}次 ({2})", new DecimalFormat("0"), new DecimalFormat("0.00%"));
+        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} {1} times ({2})", new DecimalFormat("0"), new DecimalFormat("0.00%"));
         plot.setLabelGenerator(gen);
 
         File picFile = new File("/tmp/" + UUID.randomUUID().toString() + ".png");
@@ -103,7 +103,7 @@ public class ChartMaker {
 
         PiePlot plot = (PiePlot) pieChart.getPlot();
 
-        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} [{1}ms] ({2})", new DecimalFormat("0"), new DecimalFormat("0.00%"));
+        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} [{1}s] ({2})", new DecimalFormat("0.000"), new DecimalFormat("0.00%"));
         plot.setLabelGenerator(gen);
 
         File picFile = new File("/tmp/" + UUID.randomUUID().toString() + ".png");
