@@ -19,7 +19,7 @@ public class LineInfoParser {
             lineInfo.setStat(matcher.group(6));
             final String reqStr = matcher.group(7);
             if(!"-".equals(reqStr)) {
-                lineInfo.setRequestTime(Double.parseDouble(reqStr));
+                lineInfo.setRequestTime(Double.parseDouble(reqStr) * 1000);
             }
             String uri = matcher.group(8);
             if(uri.contains("?")) {

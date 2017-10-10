@@ -61,13 +61,17 @@ public class Runner {
         //生成图片
         String totalAccessBase64Data = genTotalAccessBase64Data(analyticsResult);
         String urlCallPicChartBase64Data = genUrlCallBase64Data(analyticsResult);
-        String consumePieChartBase64Data = genConsumeBase64Data(analyticsResult);
+        String consumeTotalPieChartBase64Data = genConsumeTotalBase64Data(analyticsResult);
+        String consumeAvgPieChartBase64Data = genConsumeBase64Data(analyticsResult);
+        String httpStatusPieChartBase64Data = genHttpStatusBase64Data(analyticsResult);
 
         //发送邮件
         final String content = "<html><body>" +
                 "<img src='data:image/png;base64, " + totalAccessBase64Data + "' /><br/><br/>" +
                 "<img src='data:image/png;base64, " + urlCallPicChartBase64Data + "' /><br/><br/>" +
-                "<img src='data:image/png;base64, " + consumePieChartBase64Data + "' /><br/><br/>" +
+                "<img src='data:image/png;base64, " + consumeTotalPieChartBase64Data + "' /><br/><br/>" +
+                "<img src='data:image/png;base64, " + consumeAvgPieChartBase64Data + "' /><br/><br/>" +
+                "<img src='data:image/png;base64, " + httpStatusPieChartBase64Data + "' /><br/><br/>" +
                 "邮件发送于: <br/>" + fetchLocalIps() +
                 "</body></html>";
 
@@ -92,7 +96,7 @@ public class Runner {
 
         String ipsStr = "";
         try {
-            ipsStr = Api().get("http://169.254.169.254/latest/meta-data/public-ipv4");
+            ipsStr = Api().get("http://169.254.169.254/latest/meta-data/public-ipv4") + "<br/>";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,14 +107,28 @@ public class Runner {
         return ipsStr;
     }
 
-    private String genConsumeBase64Data(AnalyticsResult analyticsResult) {
+    private String genConsumeTotalBase64Data(AnalyticsResult analyticsResult) {
         try {
-            MapUtil.sortByValueDesc(analyticsResult.getConsumeResult());
+            MapUtil.sortByValueDesc(analyticsResult.getConsumeTotalResult());
 
             PieChartInfo pieChartInfo = new PieChartInfo();
-            pieChartInfo.setTitle("Consumed the top 20");
+            pieChartInfo.setTitle("Consumed total the top 20");
 
-            return ChartMaker.makeConsumePieChart(analyticsResult, pieChartInfo);
+            return ChartMaker.makeConsumePieChart(analyticsResult.getConsumeTotalResult(), pieChartInfo);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
+    }
+
+    private String genConsumeBase64Data(AnalyticsResult analyticsResult) {
+        try {
+            MapUtil.sortByValueDesc(analyticsResult.getConsumeAvgResult());
+
+            PieChartInfo pieChartInfo = new PieChartInfo();
+            pieChartInfo.setTitle("Consumed avg the top 20");
+
+            return ChartMaker.makeConsumePieChart(analyticsResult.getConsumeAvgResult(), pieChartInfo);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return null;
@@ -142,6 +160,20 @@ public class Runner {
         } catch (Exception e) {
             log.error("生成总计请求发生错误", e);
             return "";
+        }
+    }
+
+    private String genHttpStatusBase64Data(AnalyticsResult analyticsResult) {
+        try {
+            MapUtil.sortByValueDesc(analyticsResult.getHttpStatusResult());
+
+            PieChartInfo pieChartInfo = new PieChartInfo();
+            pieChartInfo.setTitle("Http status code the top 20");
+
+            return ChartMaker.makeConsumePieChartInteger(analyticsResult.getHttpStatusResult(), pieChartInfo);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
         }
     }
 

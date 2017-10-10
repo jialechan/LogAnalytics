@@ -12,7 +12,9 @@ public class AnalyticsResult {
 
     private Map<String, Integer> accessResult = initAccessResult();
     private Map<String, Integer> callResult = new HashMap<>();
-    private Map<String, Double> consumeResult = new HashMap<>();
+    private Map<String, Double> consumeAvgResult = new HashMap<>();
+    private Map<String, Double> consumeTotalResult = new HashMap<>();
+    private Map<String, Integer> httpStatusResult = new HashMap<>();
 
     private int totalLineScan = 0;
     private int totalAccess = 0;
@@ -45,12 +47,12 @@ public class AnalyticsResult {
         this.callResult = callResult;
     }
 
-    public Map<String, Double> getConsumeResult() {
-        return consumeResult;
+    public Map<String, Double> getConsumeAvgResult() {
+        return consumeAvgResult;
     }
 
-    public void setConsumeResult(Map<String, Double> consumeResult) {
-        this.consumeResult = consumeResult;
+    public void setConsumeAvgResult(Map<String, Double> consumeAvgResult) {
+        this.consumeAvgResult = consumeAvgResult;
     }
 
     public int getTotalAccess() {
@@ -75,6 +77,22 @@ public class AnalyticsResult {
 
     public void setTotalLineScan(int totalLineScan) {
         this.totalLineScan = totalLineScan;
+    }
+
+    public Map<String, Double> getConsumeTotalResult() {
+        return consumeTotalResult;
+    }
+
+    public void setConsumeTotalResult(Map<String, Double> consumeTotalResult) {
+        this.consumeTotalResult = consumeTotalResult;
+    }
+
+    public Map<String, Integer> getHttpStatusResult() {
+        return httpStatusResult;
+    }
+
+    public void setHttpStatusResult(Map<String, Integer> httpStatusResult) {
+        this.httpStatusResult = httpStatusResult;
     }
 }
 

@@ -45,7 +45,9 @@ public class MapUtil {
             i++;
         }
 
-        result.put("Ohter", other);
+        if(other != 0) {
+            result.put("Ohter", other);
+        }
 
         return result;
     }
@@ -54,7 +56,7 @@ public class MapUtil {
         Map<String, Double> result = new LinkedHashMap<>();
 
         int i = 0;
-        Double other = 0.0;
+        double other = 0.0;
         for(Map.Entry<String, Double> entry : sored.entrySet()) {
             if(i < 20) {
                 result.put(entry.getKey(), entry.getValue());
@@ -64,7 +66,9 @@ public class MapUtil {
             i++;
         }
 
-        result.put("Ohter", other);
+        if(other > 0.0) {
+            result.put("Ohter", other);
+        }
 
         return result;
     }

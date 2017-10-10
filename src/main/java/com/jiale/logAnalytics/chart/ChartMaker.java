@@ -91,19 +91,44 @@ public class ChartMaker {
         return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
     }
 
-    public static String makeConsumePieChart(AnalyticsResult analyticsResult, PieChartInfo pieChartInfo) throws IOException {
+    public static String makeConsumePieChart(Map<String, Double> dataResult, PieChartInfo pieChartInfo) throws IOException {
 
-        DefaultPieDataset dataset = new DefaultPieDataset();
+        DefaultPieDataset dataSet = new DefaultPieDataset();
 
-        for(Map.Entry<String, Double> item : MapUtil.filterFirst20Double(analyticsResult.getConsumeResult()).entrySet()) {
-            dataset.setValue(item.getKey(), item.getValue());
+        for(Map.Entry<String, Double> item : MapUtil.filterFirst20Double(dataResult).entrySet()) {
+            dataSet.setValue(item.getKey(), item.getValue());
         }
 
-        JFreeChart pieChart = ChartFactory.createPieChart(pieChartInfo.getTitle(), dataset, true, true, true);
+        JFreeChart pieChart = ChartFactory.createPieChart(pieChartInfo.getTitle(), dataSet, true, true, true);
 
         PiePlot plot = (PiePlot) pieChart.getPlot();
 
-        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} [{1}s] ({2})", new DecimalFormat("0.000"), new DecimalFormat("0.00%"));
+        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("{0} [{1}ms] ({2})", new DecimalFormat("0"), new DecimalFormat("0.00%"));
+        plot.setLabelGenerator(gen);
+
+        File picFile = new File("/tmp/" + UUID.randomUUID().toString() + ".png");
+        int width = 1024;
+        int height = 768;
+        ChartUtilities.saveChartAsPNG(picFile, pieChart, width, height);
+
+        byte[] bytes = IOUtils.toByteArray(new FileInputStream(picFile));
+        picFile.delete();
+        return org.apache.commons.codec.binary.Base64.encodeBase64String(bytes);
+    }
+
+    public static String makeConsumePieChartInteger(Map<String, Integer> dataResult, PieChartInfo pieChartInfo) throws IOException {
+
+        DefaultPieDataset dataSet = new DefaultPieDataset();
+
+        for(Map.Entry<String, Integer> item : MapUtil.filterFirst20Integer(dataResult).entrySet()) {
+            dataSet.setValue(item.getKey(), item.getValue());
+        }
+
+        JFreeChart pieChart = ChartFactory.createPieChart(pieChartInfo.getTitle(), dataSet, true, true, true);
+
+        PiePlot plot = (PiePlot) pieChart.getPlot();
+
+        PieSectionLabelGenerator gen = new StandardPieSectionLabelGenerator("HTTP stat code: {0} [{1}] ({2})", new DecimalFormat("0"), new DecimalFormat("0.00%"));
         plot.setLabelGenerator(gen);
 
         File picFile = new File("/tmp/" + UUID.randomUUID().toString() + ".png");

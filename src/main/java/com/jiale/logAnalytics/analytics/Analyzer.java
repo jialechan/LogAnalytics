@@ -43,12 +43,14 @@ public class Analyzer {
             if(isNotInKeyWord(lineInfo.getUri(), filter.getAccessIgnoreStartWithList())) {
                 analyticsResult.setTotalAccess(analyticsResult.getTotalAccess() + 1);
                 addAccessCount(analyticsResult, lineInfo);
+                addHttpStatusCount(analyticsResult, lineInfo);
             }
             if(isNotInKeyWord(lineInfo.getUri(), filter.getCallIgnoreStartWithList())) {
                 addCallCount(analyticsResult, lineInfo);
             }
             if(isNotInKeyWord(lineInfo.getUri(), filter.getConsumeIgnoreStartWithList())) {
-                addConsumeCount(analyticsResult, lineInfo);
+                addConsumeAvgCount(analyticsResult, lineInfo);
+                addConsumeTotalCount(analyticsResult, lineInfo);
             }
 
         }
@@ -63,10 +65,20 @@ public class Analyzer {
         return true;
     }
 
-    private void addConsumeCount(AnalyticsResult analyticsResult, LineInfo lineInfo) {
-        double consumeCount = analyticsResult.getConsumeResult().get(lineInfo.getUri()) == null ?
-                0.0 : analyticsResult.getConsumeResult().get(lineInfo.getUri());
-        analyticsResult.getConsumeResult().put(lineInfo.getUri(), (consumeCount + lineInfo.getRequestTime()) / 2);
+    private void addConsumeAvgCount(AnalyticsResult analyticsResult, LineInfo lineInfo) {
+        if(lineInfo.getRequestTime() != null) {
+            double consumeCount = analyticsResult.getConsumeAvgResult().get(lineInfo.getUri()) == null ?
+                    0.0 : analyticsResult.getConsumeAvgResult().get(lineInfo.getUri());
+            analyticsResult.getConsumeAvgResult().put(lineInfo.getUri(), (consumeCount + lineInfo.getRequestTime()) / 2);
+        }
+    }
+
+    private void addConsumeTotalCount(AnalyticsResult analyticsResult, LineInfo lineInfo) {
+        if(lineInfo.getRequestTime() != null) {
+            double consumeCount = analyticsResult.getConsumeTotalResult().get(lineInfo.getUri()) == null ?
+                    0.0 : analyticsResult.getConsumeTotalResult().get(lineInfo.getUri());
+            analyticsResult.getConsumeTotalResult().put(lineInfo.getUri(), consumeCount + lineInfo.getRequestTime());
+        }
     }
 
     private void addCallCount(AnalyticsResult analyticsResult, LineInfo lineInfo) {
@@ -79,6 +91,12 @@ public class Analyzer {
         int accessCount = analyticsResult.getAccessResult().get(lineInfo.getTime()) == null ?
                 0 : analyticsResult.getAccessResult().get(lineInfo.getTime());
         analyticsResult.getAccessResult().put(lineInfo.getTime(), accessCount + 1);
+    }
+
+    private void addHttpStatusCount(AnalyticsResult analyticsResult, LineInfo lineInfo) {
+        int count = analyticsResult.getHttpStatusResult().get(lineInfo.getStat()) == null ?
+                0 : analyticsResult.getHttpStatusResult().get(lineInfo.getStat());
+        analyticsResult.getHttpStatusResult().put(lineInfo.getStat(), count + 1);
     }
 
 }
