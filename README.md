@@ -1,6 +1,6 @@
 # LogAnalytics
 
-wget "https://raw.githubusercontent.com/jialechan/LogAnalytics/master/LogAnalytics.jar"    
+wget "https://github-production-release-asset-2e65be.s3.amazonaws.com/105360415/d7c575c2-ad7a-11e7-928e-9e745ebc22c8?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20171010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20171010T102212Z&X-Amz-Expires=300&X-Amz-Signature=542658cbb77020ddb9a01c67e57f99e93dbf402688b5963eb46721d780f2fa0f&X-Amz-SignedHeaders=host&actor_id=7006540&response-content-disposition=attachment%3B%20filename%3DLogAnalytics.jar&response-content-type=application%2Foctet-stream"    
 
 mkdir -p /userdata1/server_script   
 cd /userdata1/server_script   
