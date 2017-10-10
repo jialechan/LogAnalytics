@@ -8,8 +8,4 @@ wget "https://raw.githubusercontent.com/jialechan/LogAnalytics/master/LogAnalyti
 
 [nginx.conf](https://gist.github.com/9d4b42d55a0321683d2c651d5dda0c37) example   
 
-
-
-
-
-
+/userdata1/software/jdk1.8.0_121/bin/java -jar LogAnalytics.jar --dateStr=2017-09-29
