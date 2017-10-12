@@ -1,9 +1,9 @@
 # LogAnalytics
 
-wget "https://github.com/jialechan/LogAnalytics/releases/download/0.0.1/LogAnalytics.jar"
-
 mkdir -p /userdata1/server_script   
 cd /userdata1/server_script   
+
+wget "https://github.com/jialechan/LogAnalytics/releases/download/0.0.1/LogAnalytics.jar" -O LogAnalytics.jar
 
 [vim application.yml](https://gist.github.com/jialechan/7b545757ea70358d5e77770a5893ce3a)   
 [vim log_daily.sh](https://gist.github.com/ae96910add7a9a13c9e0d314071ba5a7)   
