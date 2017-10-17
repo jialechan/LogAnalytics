@@ -1,20 +1,28 @@
 # LogAnalytics
+```shell
+#建立文件目录
+mkdir /userdata1/server_script/
+cd /userdata1/server_script
 
-mkdir -p /userdata1/server_script   
-cd /userdata1/server_script   
+#获取代码
+git clone https://github.com/jialechan/logAnalytics-repo
+cd logAnalytics-repo/
 
-wget "https://github.com/jialechan/LogAnalytics/releases/download/0.0.1/LogAnalytics.jar" -O LogAnalytics.jar
+#根据具体配置
+cp application.yml.template application.yml
+vim application.yml
+cp nginxConfig.sh.templat nginxConfig.sh
+vim nginxConfig.sh
 
-[vim application.yml](https://gist.github.com/jialechan/7b545757ea70358d5e77770a5893ce3a)   
-[vim log_daily.sh](https://gist.github.com/ae96910add7a9a13c9e0d314071ba5a7)   
-chmod 700 log_daily.sh   
-[vim LogAnalytics.sh](https://gist.github.com/c7fe0ac9da371e8fe285ee759e582d53)      
-chmod 700 LogAnalytics.sh   
+#给予运行权限
+chmod 700 LogAnalytics.jar jq LogAnalytics.sh log_daily.sh nginxConfig.sh
 
-[vim /xxx/.../nginx.conf](https://gist.github.com/9d4b42d55a0321683d2c651d5dda0c37)   
-/userdata1/software/nginx/sbin/nginx -s reload   
-ls -l /userdata1/software/nginx/logs   
+#设置定时运行任务
+crontab -e
+00 01 * * * /userdata1/server_script/logAnalytics-repo/LogAnalytics.sh >> /userdata1/server_script/logAnalytics-repo/cronJob.log
 
-crontab -e   
-00 00 * * * /userdata1/server_script/log_daily.sh   
-00 01 * * * /userdata1/server_script/LogAnalytics.sh   
+#切换到root，设置nginx定时生成每天日志
+su -
+crontab -e
+00 00 * * * /userdata1/server_script/logAnalytics-repo/log_daily.sh
+```
