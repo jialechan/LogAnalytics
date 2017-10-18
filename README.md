@@ -15,7 +15,7 @@ cp nginxConfig.sh.templat nginxConfig.sh
 vim nginxConfig.sh
 
 #给予运行权限
-chmod 700 LogAnalytics.jar jq LogAnalytics.sh log_daily.sh nginxConfig.sh
+chmod 700 LogAnalytics.jar LogAnalytics.sh log_daily.sh nginxConfig.sh
 
 #设置定时运行任务
 crontab -e
