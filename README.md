@@ -11,7 +11,7 @@ cd logAnalytics-repo/
 #根据具体配置
 cp application.yml.template application.yml
 vim application.yml
-cp nginxConfig.sh.templat nginxConfig.sh
+cp nginxConfig.sh.template nginxConfig.sh
 vim nginxConfig.sh
 
 #给予运行权限
