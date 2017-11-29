@@ -26,3 +26,25 @@ su -
 crontab -e
 00 00 * * * /userdata1/server_script/logAnalytics-repo/log_daily.sh
 ```
+## info
+```shell
+http {
+  ...
+  log_format chatLog 'T[$time_iso8601] STAT[$status] REQ_T[$upstream_response_time] URL[$request]';
+  ...
+}  
+```
+
+```shell
+server {
+    listen       80;
+    server_name  xxxx.com;
+    access_log /userdata1/logs/xxxx/api.xxxx.com.access.log chatLog;
+    location / {
+        proxy_pass http://172.17.10.61:8224;
+        proxy_set_header Host   $host;
+        proxy_set_header X-Real-IP      $remote_addr;
+        proxy_set_header X-Forwarded-For        $remote_addr;
+    }
+}
+```
